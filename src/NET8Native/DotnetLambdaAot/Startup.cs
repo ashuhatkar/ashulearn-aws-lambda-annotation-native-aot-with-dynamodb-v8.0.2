@@ -25,7 +25,7 @@ public class Startup
     /// <param name="services">Collection of service descriptors</param>
     public void ConfigureServices(IServiceCollection services)
     {
-        services.BuildServiceProvider(validateScopes: false);
+        //services.BuildServiceProvider(validateScopes: false);
         services.AddSingleton<IAmazonDynamoDB>(new AmazonDynamoDBClient());
         services.AddSingleton<IProductsDAO, DynamoDbProducts>();
     }
