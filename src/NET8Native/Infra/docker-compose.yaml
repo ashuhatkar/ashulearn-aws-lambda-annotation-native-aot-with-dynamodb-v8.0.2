@@ -1,0 +1,26 @@
+# docker run -d -p 8000:8000 --network=<NETWORK>
+
+version: '3.9'
+services:
+  dynamodb-local:
+    # Tag or partial image IO. Can be local or remote - Compose will
+    # attempt to pull if it doesn't exist locally.
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    # Expose ports. Either specify both ports (HOST:CONTAINER), or just the
+    # container port (a random host port will be chosen).
+    #
+    # Note: When mapping ports in the HOST:CONTAINER format, you may experience
+    # erroreous results when using a container port lower than 60, bcoz YAML
+    # will parse numbers in the format xx:yy as sexagesimal (base 60). For this
+    # reason, we recommend always explicitly specifying you port mappings as
+    # strings.
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+
+volumes:
+  dynamodb_data_vol:
