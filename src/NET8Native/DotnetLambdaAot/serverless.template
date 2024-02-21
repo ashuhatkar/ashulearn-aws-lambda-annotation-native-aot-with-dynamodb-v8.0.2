@@ -1,0 +1,143 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "This template is partially managed by Amazon.Lambda.Annotations (v1.2.0.0).",
+  "Resources": {
+    "DotNetLambdaAotFunctionGetProductsAsyncGenerated": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations",
+        "SyncedEvents": [
+          "RootGet"
+        ]
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "PackageType": "Zip",
+        "Handler": "bootstrap",
+        "Environment": {
+          "Variables": {
+            "ANNOTATIONS_HANDLER": "GetProductsAsync"
+          }
+        },
+        "Events": {
+          "RootGet": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+    "DotNetLambdaAotFunctionGetProductAsyncGenerated": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations",
+        "SyncedEvents": [
+          "RootGet"
+        ]
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "PackageType": "Zip",
+        "Handler": "bootstrap",
+        "Environment": {
+          "Variables": {
+            "ANNOTATIONS_HANDLER": "GetProductAsync"
+          }
+        },
+        "Events": {
+          "RootGet": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/{id}",
+              "Method": "GET"
+            }
+          }
+        }
+      }
+    },
+    "DotNetLambdaAotFunctionDeleteProductAsyncGenerated": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations",
+        "SyncedEvents": [
+          "RootDelete"
+        ]
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "PackageType": "Zip",
+        "Handler": "bootstrap",
+        "Environment": {
+          "Variables": {
+            "ANNOTATIONS_HANDLER": "DeleteProductAsync"
+          }
+        },
+        "Events": {
+          "RootDelete": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/{id}",
+              "Method": "DELETE"
+            }
+          }
+        }
+      }
+    },
+    "DotNetLambdaAotFunctionCreateProductAsyncGenerated": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations",
+        "SyncedEvents": [
+          "RootPost"
+        ]
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "PackageType": "Zip",
+        "Handler": "bootstrap",
+        "Environment": {
+          "Variables": {
+            "ANNOTATIONS_HANDLER": "CreateProductAsync"
+          }
+        },
+        "Events": {
+          "RootPost": {
+            "Type": "HttpApi",
+            "Properties": {
+              "Path": "/",
+              "Method": "POST"
+            }
+          }
+        }
+      }
+    }
+  }
+}
