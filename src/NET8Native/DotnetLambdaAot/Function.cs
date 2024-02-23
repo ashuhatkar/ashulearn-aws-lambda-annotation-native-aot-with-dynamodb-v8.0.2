@@ -57,7 +57,8 @@ public class Function
     [HttpApi(LambdaHttpMethod.Post, template: "/")]
     public async Task<Product> CreateProductAsync([FromBody] Product product)
     {
-        await _dataAccess.PutProduct(product);
+        await _dataAccess.CreateProduct(product);
+        //await _dataAccess.PutProduct(product);
 
         return product;
     }

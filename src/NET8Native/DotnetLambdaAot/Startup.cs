@@ -27,6 +27,6 @@ public class Startup
     {
         //services.BuildServiceProvider(validateScopes: false);
         services.AddSingleton<IAmazonDynamoDB>(new AmazonDynamoDBClient());
-        services.AddSingleton<IProductsDAO, DynamoDbProducts>();
+        services.AddSingleton<IProductsDAO, DynamoDBProducts>();
     }
 }

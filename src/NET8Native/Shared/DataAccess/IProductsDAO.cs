@@ -15,6 +15,13 @@ public interface IProductsDAO
     Task<Product> GetProduct(string id);
 
     /// <summary>
+    /// Create product
+    /// </summary>
+    /// <param name="product">Product</param>
+    /// <returns>A task that represents an asynchronous operation</returns>
+    Task CreateProduct(Product product);
+
+    /// <summary>
     /// Create/Update product
     /// </summary>
     /// <param name="product">Product</param>
