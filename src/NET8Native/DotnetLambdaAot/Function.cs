@@ -54,11 +54,19 @@ public class Function
     }
 
     [LambdaFunction]
-    [HttpApi(LambdaHttpMethod.Post, template: "/")]
+    [HttpApi(LambdaHttpMethod.Post, template: "/create")]
     public async Task<Product> CreateProductAsync([FromBody] Product product)
     {
         await _dataAccess.CreateProduct(product);
-        //await _dataAccess.PutProduct(product);
+
+        return product;
+    }
+
+    [LambdaFunction]
+    [HttpApi(LambdaHttpMethod.Put, template: "/update")]
+    public async Task<Product> UpdateProductAsync([FromBody] Product product)
+    {
+        await _dataAccess.PutProduct(product);
 
         return product;
     }
