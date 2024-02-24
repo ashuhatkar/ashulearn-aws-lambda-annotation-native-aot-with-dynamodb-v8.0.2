@@ -1,4 +1,14 @@
-﻿using System.Globalization;
+﻿/*--****************************************************************************
+  --* Project Name    : Shared
+  --* Reference       : System.Globalization
+  --*                   Amazon.DynamoDBv2.Model
+  --*                   Shared.Models
+  --* Description     : Data access using DynamoDB
+  --* Configuration Record
+  --* Review            Ver  Author           Date      Cr       Comments
+  --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
+  --****************************************************************************/
+using System.Globalization;
 using Amazon.DynamoDBv2.Model;
 using Shared.Models;
 

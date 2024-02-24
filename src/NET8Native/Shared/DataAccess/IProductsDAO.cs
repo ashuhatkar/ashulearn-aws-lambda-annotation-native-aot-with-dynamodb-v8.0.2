@@ -1,4 +1,12 @@
-﻿using Shared.Models;
+﻿/*--****************************************************************************
+  --* Project Name    : Shared
+  --* Reference       : Shared.Models
+  --* Description     : Data access interface using DynamoDB
+  --* Configuration Record
+  --* Review            Ver  Author           Date      Cr       Comments
+  --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
+  --****************************************************************************/
+using Shared.Models;
 
 namespace Shared.DataAccess;
 

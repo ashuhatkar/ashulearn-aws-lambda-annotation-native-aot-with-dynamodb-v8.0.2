@@ -1,9 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿/*--****************************************************************************
+  --* Project Name    : Shared
+  --* Reference       : Amazon.DynamoDBv2
+  --*                   Amazon.DynamoDBv2.DataModel
+  --*                   Amazon.DynamoDBv2.Model
+  --*                   Amazon.Lambda.Annotations.APIGateway
+  --*                   Shared.DataAccess
+  --* Description     : Data access using DynamoDB
+  --* Configuration Record
+  --* Review            Ver  Author           Date      Cr       Comments
+  --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
+  --****************************************************************************/
+using System.Diagnostics.CodeAnalysis;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Annotations.APIGateway;
-using Amazon.Lambda.Core;
 using Shared.Models;
 
 namespace Shared.DataAccess;
