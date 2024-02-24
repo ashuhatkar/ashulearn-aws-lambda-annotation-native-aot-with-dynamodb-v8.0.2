@@ -50,7 +50,7 @@ public partial class DynamoDBProducts : IProductsDAO
     /// List of products
     /// </summary>
     /// <returns>A task that represents the asynchronous operation</returns>
-    public async Task<ProductWrapper> GetAllProducts()
+    public virtual async Task<ProductWrapper> GetAllProducts()
     {
         var data = await _dynamoDbClient.ScanAsync(new ScanRequest()
         {
@@ -73,7 +73,7 @@ public partial class DynamoDBProducts : IProductsDAO
     /// </summary>
     /// <param name="id">Product identitifer</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    public async Task<Product> GetProduct(string id)
+    public virtual async Task<Product> GetProduct(string id)
     {
         var getItemResponse = await _dynamoDbClient.GetItemAsync(new GetItemRequest(PRODUCT_TABLE_NAME,
             new Dictionary<string, AttributeValue>(1)
@@ -89,7 +89,7 @@ public partial class DynamoDBProducts : IProductsDAO
     /// </summary>
     /// <param name="product">Product</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    public async Task CreateProduct([FromBody] Product product)
+    public virtual async Task CreateProduct([FromBody] Product product)
     {
         await _dynamoDbContext.SaveAsync(product);
     }
@@ -99,7 +99,7 @@ public partial class DynamoDBProducts : IProductsDAO
     /// </summary>
     /// <param name="product">Product</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    public async Task PutProduct(Product product)
+    public virtual async Task PutProduct(Product product)
     {
         await _dynamoDbClient.PutItemAsync(PRODUCT_TABLE_NAME, ProductMapper.ProductToDynamoDb(product));
     }
@@ -109,7 +109,7 @@ public partial class DynamoDBProducts : IProductsDAO
     /// </summary>
     /// <param name="id">Product identifier</param>
     /// <returns>A task that represents the asynchronous operation</returns>
-    public async Task DeleteProduct(string id)
+    public virtual async Task DeleteProduct(string id)
     {
         await _dynamoDbClient.DeleteItemAsync(PRODUCT_TABLE_NAME, new Dictionary<string, AttributeValue>(1)
         {

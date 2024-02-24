@@ -46,21 +46,21 @@ public partial class Function
 
     [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Get, template: "/")]
-    public async Task<ProductWrapper> GetProductsAsync()
+    public virtual async Task<ProductWrapper> GetProductsAsync()
     {
         return await _dataAccess.GetAllProducts();
     }
     
     [LambdaFunction]
     [HttpApi(LambdaHttpMethod.Get, template:"/{id}")]
-    public async Task<Product> GetProductAsync(string id)
+    public virtual async Task<Product> GetProductAsync(string id)
     {
         return await _dataAccess.GetProduct(id);
     }
 
     [LambdaFunction]
     [HttpApi(LambdaHttpMethod.Delete, template: "/{id}")]
-    public async Task<string> DeleteProductAsync(string id)
+    public virtual async Task<string> DeleteProductAsync(string id)
     {
         await _dataAccess.DeleteProduct(id);
 
@@ -69,7 +69,7 @@ public partial class Function
 
     [LambdaFunction]
     [HttpApi(LambdaHttpMethod.Post, template: "/create")]
-    public async Task<Product> CreateProductAsync([FromBody] Product product)
+    public virtual async Task<Product> CreateProductAsync([FromBody] Product product)
     {
         await _dataAccess.CreateProduct(product);
 
@@ -78,7 +78,7 @@ public partial class Function
 
     [LambdaFunction]
     [HttpApi(LambdaHttpMethod.Put, template: "/update")]
-    public async Task<Product> UpdateProductAsync([FromBody] Product product)
+    public virtual async Task<Product> UpdateProductAsync([FromBody] Product product)
     {
         await _dataAccess.PutProduct(product);
 
