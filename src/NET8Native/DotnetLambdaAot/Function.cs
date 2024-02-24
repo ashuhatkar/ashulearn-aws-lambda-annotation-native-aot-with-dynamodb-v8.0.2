@@ -22,7 +22,7 @@ using Shared.Models;
 
 namespace DotNetLambdaAot;
 
-public class Function
+public partial class Function
 {
     #region Fields
 

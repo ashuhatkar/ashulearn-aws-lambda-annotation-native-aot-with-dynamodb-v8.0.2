@@ -13,7 +13,7 @@ namespace Shared.Models;
 /// <summary>
 /// Represents product wrapper
 /// </summary>
-public class ProductWrapper
+public partial class ProductWrapper
 {
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ProductWrapper))]
     public ProductWrapper()

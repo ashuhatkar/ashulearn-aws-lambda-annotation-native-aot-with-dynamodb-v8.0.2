@@ -13,7 +13,7 @@ namespace Shared.DataAccess;
 /// <summary>
 /// Represents product repo interface
 /// </summary>
-public interface IProductsDAO
+public partial interface IProductsDAO
 {
     /// <summary>
     /// Get product

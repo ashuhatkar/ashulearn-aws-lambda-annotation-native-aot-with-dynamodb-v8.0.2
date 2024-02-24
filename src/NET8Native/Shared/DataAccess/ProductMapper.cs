@@ -14,7 +14,7 @@ using Shared.Models;
 
 namespace Shared.DataAccess;
 
-public class ProductMapper
+public partial class ProductMapper
 {
     public static string PK = "id";
     public static string NAME = "name";

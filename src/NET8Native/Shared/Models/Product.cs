@@ -13,7 +13,7 @@ namespace Shared.Models;
 /// <summary>
 /// Represents product
 /// </summary>
-public class Product
+public partial class Product
 {
     #region Ctor
 

@@ -22,7 +22,7 @@ namespace Shared.DataAccess;
 /// <summary>
 /// Represents products repo
 /// </summary>
-public class DynamoDBProducts : IProductsDAO
+public partial class DynamoDBProducts : IProductsDAO
 {
     #region Fields
 
