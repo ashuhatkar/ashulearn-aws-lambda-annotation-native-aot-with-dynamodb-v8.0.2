@@ -11,6 +11,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Copy To Branches Action
-        uses: ashuhatkar/ashulearn-aws-lambda-annotation-native-aot-with-dynamodb-v8.0.2.git
+        uses: ashuhatkar/copy-to-branches@v1.2
         env:
           key: main
