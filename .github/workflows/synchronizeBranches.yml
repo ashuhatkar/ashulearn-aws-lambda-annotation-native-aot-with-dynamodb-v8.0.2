@@ -6,10 +6,11 @@ jobs:
   copy-to-branches:
     runs-on: ubuntu-latest
     steps:
+      # This step checks out a copy of your repository
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Copy To Branches Action
-        uses: ashulearn-aws-lambda-annotation-native-aot-with-dynamodb-v8.0.2/copy-to-branches@v1.2
+        uses: ashuhatkar/ashulearn-aws-lambda-annotation-native-aot-with-dynamodb-v8.0.2@latest
         env:
           key: main
