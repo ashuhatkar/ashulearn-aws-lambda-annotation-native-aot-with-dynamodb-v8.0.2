@@ -11,6 +11,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Copy To Branches Action
-        uses: actions/copy-to-branches@v1.2
+        uses: ashuhatkar/copy-to-branches@latest
         env:
           key: main
