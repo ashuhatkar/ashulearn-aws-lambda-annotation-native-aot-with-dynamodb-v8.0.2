@@ -28,6 +28,8 @@ name: Deploy main branch to Amazon Lambda
   push:
     branches:
       - main
+env:
+  AWS_REGION: ap-southeast-2
 jobs:
   build-deploy-serverless:
     name: Deploy
