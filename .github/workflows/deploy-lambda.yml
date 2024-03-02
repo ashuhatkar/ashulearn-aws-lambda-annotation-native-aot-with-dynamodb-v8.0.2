@@ -3,11 +3,11 @@
 #
 # To use this workflow, you will need to complete the following set-up steps:
 #
-# 1. Create lambda function in the code of your choice.
-#
-# 2. Create a s3 bucket in the same region
-#
-# 3. Create an IAM User and Access Key with Permission policies to:
+# 1. Create a GitHub account and a repository.
+# 2. Create a AWS Free-tier account.
+# 3. Create lambda function in the code of your choice.
+# 4. Create a s3 bucket in the same region
+# 5. Create an IAM User and Access Key with Permission policies to:
 #    IAMFullAccess
 #    AmazonS3FullAccess
 #    AmazonAPIGatewayInvokeFullAccess
@@ -15,13 +15,10 @@
 #    AmazonAPIGatewayAdministrator
 #    AWSCloudFormationFullAccess
 #    AWSLambdaFullAccess
-#
-# 3. Generate Access Keys
-#
-# 4. Create a GitHub action workflow to deploy our lambda to AWS Cloud
+# 6. Generate Access Keys
+# 7. Create a GitHub action workflow to deploy our lambda to AWS Cloud
 #    Create a file '<deploy>.yml' below the folder .github/workflows folder.
-#
-# 5. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+# 8. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
