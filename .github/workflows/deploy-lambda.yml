@@ -31,30 +31,25 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
-    strategy:
-      matrix:
-        dotnet:
-          - 6.0.x
-          - 8.0.x
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-        - name: Setup .NET core sdk
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: |
-              6.0.x
-              8.0.x
-        - name: Setup SAM (Serverless Application Model)
-          uses: aws-actions/setup-sam@v2
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
-            aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
-            aws-region: '${{ env.AWS_REGION }}'
-        - run: sam build --use-container
-        - run: >-
-            sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-            --stack-name sam-ashulearn-lambda --s3-bucket vstiara-hosted-content
-            --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup .NET core sdk
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+      - name: Setup SAM (Serverless Application Model)
+        uses: aws-actions/setup-sam@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          aws-region: '${{ env.AWS_REGION }}'
+      - run: sam build --use-container
+      - run: >-
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+          --stack-name sam-ashulearn-lambda --s3-bucket vstiara-hosted-content
+          --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }}
