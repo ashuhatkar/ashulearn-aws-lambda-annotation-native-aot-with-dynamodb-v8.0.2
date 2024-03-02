@@ -12,6 +12,7 @@
   --* Review            Ver  Author           Date      Cr       Comments
   --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
   --****************************************************************************/
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Amazon.Lambda.Annotations;
