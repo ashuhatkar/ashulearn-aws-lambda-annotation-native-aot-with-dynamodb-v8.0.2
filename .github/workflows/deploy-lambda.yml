@@ -24,7 +24,6 @@
 
 name: Deploy main branch to Amazon Lambda
 'on':
-  workflow_dispatch: null
   push:
     branches: [ $default-branch ]
 jobs:
