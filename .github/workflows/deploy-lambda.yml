@@ -21,6 +21,7 @@
 # 8. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
+#
 
 name: Deploy main branch to Amazon Lambda
 'on':
