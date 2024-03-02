@@ -25,7 +25,8 @@
 name: Deploy main branch to Amazon Lambda
 'on':
   push:
-    branches: [ $default-branch ]
+    branches:
+      - main
 jobs:
   build-deploy-serverless:
     name: Deploy
