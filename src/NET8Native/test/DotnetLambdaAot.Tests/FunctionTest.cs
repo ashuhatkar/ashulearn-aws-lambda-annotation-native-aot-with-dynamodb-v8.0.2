@@ -29,7 +29,7 @@ public class FunctionTest
     {
         // Invoke the lambda function and confirm the string was upper cased.
         var context = new TestLambdaContext();
-        var products = await _function.GetProductsAsync();
+        var products = await _function.GetProductAsync("123");
 
         //Assert.Equal(products);
     }
