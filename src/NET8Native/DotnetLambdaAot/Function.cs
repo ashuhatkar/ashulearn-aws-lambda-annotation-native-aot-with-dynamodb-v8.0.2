@@ -46,14 +46,12 @@ public partial class Function
 
     #region Methods
 
-    /*
     [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Get, template: "/")]
     public virtual async Task<ProductWrapper> GetProductsAsync()
     {
         return await _dataAccess.GetAllProducts();
     }
-    */
     
     [LambdaFunction]
     [HttpApi(LambdaHttpMethod.Get, template:"/{id}")]
