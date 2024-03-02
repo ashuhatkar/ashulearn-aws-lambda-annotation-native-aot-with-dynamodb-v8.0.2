@@ -1,0 +1,64 @@
+# This workflow will build and push serverless application
+# when there is a push to the $default-branch branch.
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create lambda function in the code of your choice.
+#
+# 2. Create a s3 bucket in the same region
+#
+# 3. Create an IAM User and Access Key with Permission policies to:
+#    IAMFullAccess
+#    AmazonS3FullAccess
+#    AmazonAPIGatewayInvokeFullAccess
+#    CloudWatchFullAccess
+#    AmazonAPIGatewayAdministrator
+#    AWSCloudFormationFullAccess
+#    AWSLambdaFullAccess
+#
+# 3. Generate Access Keys
+#
+# 4. Create a GitHub action workflow to deploy our lambda to AWS Cloud
+#    Create a file '<deploy>.yml' below the folder .github/workflows folder.
+#
+# 5. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#    and best practices on handling the access key credentials.
+
+name: Deploy main branch to Amazon Lambda
+'on':
+  workflow_dispatch: null
+  push:
+    branches: [ $default-branch ]
+jobs:
+  build-deploy-serverless:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        dotnet:
+          - 6.0.x
+          - 8.0.x
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+        - name: Setup .NET core sdk
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: |
+              6.0.x
+              8.0.x
+        - name: Setup SAM (Serverless Application Model)
+          uses: aws-actions/setup-sam@v2
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+            aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+            aws-region: '${{ env.AWS_REGION }}'
+        - run: sam build --use-container
+        - run: >-
+            sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+            --stack-name sam-ashulearn-lambda --s3-bucket vstiara-hosted-content
+            --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }}
