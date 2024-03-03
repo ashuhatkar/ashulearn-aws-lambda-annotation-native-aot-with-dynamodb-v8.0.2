@@ -1,27 +1,58 @@
-# This workflow will build and push serverless application
+# This GitHub action workflow will build and push serverless application
 # when there is a push to the $default-branch branch.
 #
 # To use this workflow, you will need to complete the following set-up steps:
 #
-# 1. Create a GitHub account and a repository.
-# 2. Create a AWS Free-tier account.
-# 3. Create lambda function in the code of your choice.
-# 4. Create a s3 bucket in the same region
-# 5. Create an IAM User and Access Key with Permission policies to:
-#    IAMFullAccess
-#    AmazonS3FullAccess
-#    AmazonAPIGatewayInvokeFullAccess
-#    CloudWatchFullAccess
-#    AmazonAPIGatewayAdministrator
-#    AWSCloudFormationFullAccess
-#    AWSLambdaFullAccess
-# 6. Generate Access Keys
-# 7. Create a GitHub action workflow to deploy our lambda to AWS Cloud
-#    Create a file '<deploy>.yml' below the folder .github/workflows folder.
-# 8. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
-#    and best practices on handling the access key credentials.
-#
+# 1.  A GitHub account, with required permissions to configure GitHub repositories
+#     create workflows, and configure GitHub secrets.
+# 2.  Create a new GitHub repository and clone it to your local environment.
+# 2.  An AWS account with permissions to create the necessay resources.
+# 3.  Install AWS Command Line Interface (CLI) and AWS SAM CLI locally.
+#     This is separate from using the AWS SAM CLI in a GitHub Actions runner.
+# 4.  Create an Amazon S3 bucket in your AWS account to store the build package 
+#     for deployment within the same region.
+# 6.  Create a function in the code of your choice.
+# 7.  Create an AWS SAM application in the root of the repository, using default configuration.
+# 8.  Create the {<deploy>.yml} file. The GitHub CI/CD pipelines are configured using a YAML file.
+#     This file configures what specific action triggers a workflow, such as push on main/master,
+#     and what workflow steps are required. Usually, created at the root directory: (.github/workflows).
+# 9.  The configuration triggers the GitHub Actions CI/CD pipeline when code is pushed to the main
+#     branch. You can ammend this if you are using another branch.
+# 10. You can further customize the sam build --use-container command if necessary. By default the
+#     Docker image used to create the build artifact is pulled from Amazon ECR Public. To pull a different
+#     container image, use the --build-image option as specified in the
+#     (documentation)[https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html].
+# 11. Configuring AWS credentials in GitHub.
+#     The GitHub Actions CI/CD pipeline requires AWS credentials to access to your AWS account.
+#     The credentials must include AWS Identity and Access Management (IAM) policies that provide
+#     access to Lambda, API Gateway, AWS CloudFormation, S3, and IAM resources.
+# 12. Create an sample IAM user with policies permission to:
+#     IAMFullAccess
+#     AmazonS3FullAccess
+#     AmazonAPIGatewayInvokeFullAccess
+#     CloudWatchFullAccess
+#     AmazonAPIGatewayAdministrator
+#     AWSCloudFormationFullAccess
+#     AWSLambdaFullAccess
+# 13. These credentials are stored as GitHub secrets within your GitHub repository, under Settings => Secrets.
+# 14. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#     See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#     and best practices on handling the access key credentials.
+# 15. Deploying your application.
+#     Add all your files to your local git repository, commit the changes, and push to GitHub.
+# 16. Once the files are pushed to GitHub on the main branch, this automatically triggers the GitHub Actions
+#     CI/CD pipeline as configured in the .YML/YAML file.
+# 17. If the build fails, you can view the error message.
+#     Incompatible software versions.
+#     Credentials could not be loaded. Verify the AWS credentials are stored in GitHub secrets.
+#     Ensure that your AWS account has necessary permissions to deploy the resources in AWS SAM template.
+#     Permission to S3 deployment bucket.
+# 18. Testing the application
+# 19. Cleanup
+#     To remove the application resource, navigate to the CloudFormation console and delete the stack.
+#     Alternatively, you can use AWS CLI command to remove the stack.
+#     aws cloudformation delete-stack --stack-name <stack-name>
+#     Empty, and delete the S3 deployment bucket.
 
 name: Deploy main branch to Amazon Lambda
 'on':
