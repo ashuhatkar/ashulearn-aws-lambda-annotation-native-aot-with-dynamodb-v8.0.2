@@ -1,26 +1,29 @@
-# The transformation line tell CloudFormation, that the template adheres to the open source AWS Serverless App Model Specs
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   Example template for an HTTP API that creates, updates, and deletes items in DynamoDB
 
-# This section defines properties common to all your Serverless functions and APIs
-# In this case, it's specifying that all functions in this project will have a default timeout of 10 seconds and default memory of 1024 MB.
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     MemorySize: 1024
-    Architectures:
-      - arm64
+    Architectures: [!Ref LambdaArchitecture]
     Runtime: provided.al2
-    Timeout: 10
+    Timeout: 20
     Tracing: Active
     Environment:
       Variables:
         PRODUCT_TABLE_NAME: !Ref Table
 
+Parameters:
+  LambdaArchitecture:
+    Type: String
+    AllowedValues:
+      - arm64
+      - x86_64
+    Description: Enter arm64 or x86_64
+
 Resources:
-  # The following section creates a Lambda function with an IAM execution role. It also specifies that the code for this Lambda funciton is
+  # The following section creates a Lambda function with an IAM execution role. It also specifies that the code for this Lambda function is
   # located under a folder specified in the CodeUri Key. The Handler key defines the file and function name of the entrypoint
   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
   GetProductsFunction:
@@ -28,102 +31,104 @@ Resources:
     Metadata:
       BuildMethod: makefile
     Properties:
-      CodeUri: ./GetProduct/
-      Handler: GetProduct::GetProduct.Function_GetProductsAsync_Generated::GetProductsAsync
-      Runtime: provided.al2
-      Architectures:
-        - x86_64
-      MemorySize: 256
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+      Description: Native AOT GetProducts sample
+      CodeUri: ./DotnetLambdaAot/
+      Handler: DotnetLambdaAot::DotnetLambdaAot.Function_GetProductsAsync_Generated::GetProductsAsync
+      Environment:
         Variables:
           ANNOTATIONS_HANDLER: "GetProductsAsync"
       # The Events section is part of the function definition. This section specifies the different events that will trigger the Lambda function.
       # In this case, we are specifying an HTTP GET request to an API Gateway with an endpoint of / (root)
+      Policies:
+      # Give read permissions to table
+      - DynamoDBReadPolicy:
+          TableName: !Ref Table
       Events:
         Api:
           Type: HttpApi
           Properties:
             Path: /
             Method: GET
-      Policies:
-        -   DynamoDBReadPolicy:
-            TableName: !Ref Table
 
   GetProductFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
-      CodeUri: ./GetProduct/
-      Handler: GetProduct::GetProduct.Function_GetProductAsync_Generated::GetProductAsync
-      MemorySize: 512
+      CodeUri: ./DotnetLambdaAot/
+      Handler: DotnetLambdaAot::DotnetLambdaAot.Function_GetProductAsync_Generated::GetProductAsync
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "GetProductAsync"
+      Policies:
+      # Give read permissions to table
+      - DynamoDBReadPolicy:
+          TableName: !Ref Table
       Events:
         Api:
           Type: HttpApi
           Properties:
             Path: /{id}
             Method: GET
-      Policies: 
-        - DynamoDBReadPolicy:
-            TableName:
-              !Ref Table
 
   DeleteProductFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
-      CodeUri: ./GetProduct/
-      Handler: GetProduct::GetProduct.Function_DeleteProductAsync_Generated::DeleteProductAsync
+      CodeUri: ./DotnetLambdaAot/
+      Handler: DotnetLambdaAot::DotnetLambdaAot.Function_DeleteProductAsync_Generated::DeleteProductAsync
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "DeleteProductAsync"
+      Policies:
+      # Give read, write, update permissions to table
+      - DynamoDBCrudPolicy:
+          TableName: !Ref Table
       Events:
         Api:
           Type: HttpApi
           Properties:
             Path: /{id}
             Method: DELETE
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName:
-              !Ref Table
 
   PutProductFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
-      CodeUri: ./GetProduct/
-      Handler: GetProduct::GetProduct.Function_CreateProductAsync_Generated::CreateProductAsync
+      CodeUri: ./DotnetLambdaAot/
+      Handler: DotnetLambdaAot::DotnetLambdaAot.Function_CreateProductAsync_Generated::CreateProductAsync
       MemorySize: 3000
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "CreateProductAsync"
+      Policies:
+      # Give read, write, update permissions to table
+      - DynamoDBCrudPolicy:
+          TableName: !Ref Table
       Events:
         Api:
          Type: HttpApi
          Properties:
            Path: /
            Method: POST
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName:
-              !Ref Table
 
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
+      TableName: Products
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: Id
+          AttributeType: S
+        - AttributeName: Barcode
           AttributeType: S
       BillingMode: PAY_PER_REQUEST
       KeySchema:
-        - AttributeName: id
+        - AttributeName: Id
           KeyType: HASH
+        - AttributeName: Barcode
+          KeyType: RANGE
 
 # The Outputs section is optional an it declares output values that you import into other CloudFormation stacks (to create cross stack ref).
 Outputs:

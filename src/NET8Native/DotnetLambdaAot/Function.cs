@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
 using Shared.DataAccess;
 using Shared.Models;
 
@@ -48,19 +49,20 @@ public partial class Function
 
     [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Get, template: "/")]
-    public virtual async Task<ProductWrapper> GetProductsAsync()
+    public virtual async Task<ProductWrapper> GetProductsAsync(ILambdaContext context)
     {
+        context.Logger.LogInformation($"");
         return await _dataAccess.GetAllProducts();
     }
     
-    [LambdaFunction]
+    [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Get, template:"/{id}")]
     public virtual async Task<Product> GetProductAsync(string id)
     {
         return await _dataAccess.GetProduct(id);
     }
 
-    [LambdaFunction]
+    [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Delete, template: "/{id}")]
     public virtual async Task<string> DeleteProductAsync(string id)
     {
@@ -69,7 +71,7 @@ public partial class Function
         return "Deleted";
     }
 
-    [LambdaFunction]
+    [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Post, template: "/create")]
     public virtual async Task<Product> CreateProductAsync([FromBody] Product product)
     {
@@ -78,7 +80,7 @@ public partial class Function
         return product;
     }
 
-    [LambdaFunction]
+    [LambdaFunction()]
     [HttpApi(LambdaHttpMethod.Put, template: "/update")]
     public virtual async Task<Product> UpdateProductAsync([FromBody] Product product)
     {

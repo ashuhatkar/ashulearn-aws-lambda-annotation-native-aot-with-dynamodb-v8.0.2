@@ -34,6 +34,7 @@
 #     AmazonAPIGatewayAdministrator
 #     AWSCloudFormationFullAccess
 #     AWSLambdaFullAccess
+#     CloudWatchApplicationInsightsFullAccess
 # 13. These credentials are stored as GitHub secrets within your GitHub repository, under Settings => Secrets.
 # 14. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 #     See the documentation for each action used below for the recommended IAM policies for this IAM user,
@@ -73,9 +74,13 @@ jobs:
       - name: Setup .NET core sdk
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: |
-            6.0.x
-            8.0.x
+          dotnet-version: 8.0.x
+      - name: Clean project
+        run: dotnet clean
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build --no-restore
       - name: Setup SAM (Serverless Application Model)
         uses: aws-actions/setup-sam@v2
       - name: Configure AWS credentials
@@ -83,7 +88,7 @@ jobs:
         with:
           aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
-          aws-region: '${{ env.AWS_REGION }}'
+          aws-region: '${{ secrets.AWS_REGION }}'
       - run: sam build --template ${SAM_TEMPLATE} --use-container
       - run: >-
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset

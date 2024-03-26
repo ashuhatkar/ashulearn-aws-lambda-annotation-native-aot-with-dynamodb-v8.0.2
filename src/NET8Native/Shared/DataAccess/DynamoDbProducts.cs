@@ -38,8 +38,8 @@ public partial class DynamoDBProducts : IProductsDAO
     public DynamoDBProducts()
     {
         _dynamoDbClient = new AmazonDynamoDBClient();
-        _dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
         _dynamoDbClient.DescribeTableAsync(PRODUCT_TABLE_NAME).GetAwaiter().GetResult();
+        _dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
     }
 
     #endregion

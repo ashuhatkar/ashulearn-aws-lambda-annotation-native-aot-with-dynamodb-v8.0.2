@@ -9,8 +9,9 @@
   --* Review            Ver  Author           Date      Cr       Comments
   --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
   --****************************************************************************/
+using System;
+using Amazon;
 using Amazon.DynamoDBv2;
-using Amazon.Lambda.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.DataAccess;
 
@@ -19,7 +20,7 @@ namespace DotNetLambdaAot;
 /// <summary>
 /// Represents startup class of application
 /// </summary>
-[LambdaStartup]
+[Amazon.Lambda.Annotations.LambdaStartup]
 public class Startup
 {
     #region Ctor
@@ -37,7 +38,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         //services.BuildServiceProvider(validateScopes: false);
-        services.AddSingleton<IAmazonDynamoDB>(new AmazonDynamoDBClient());
-        services.AddSingleton<IProductsDAO, DynamoDBProducts>();
+        string region = Environment.GetEnvironmentVariable("AWS_REGION") ?? RegionEndpoint.APSoutheast2.SystemName;
+        services.AddSingleton<IAmazonDynamoDB>(new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(region)));
+        services.AddSingleton<IProductsDAO>(new DynamoDBProducts());
     }
 }

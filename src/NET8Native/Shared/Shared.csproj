@@ -34,9 +34,8 @@
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.300.1" />
   </ItemGroup>
 
-    <ItemGroup>
-        <TrimmerRootAssembly Include="AWSSDK.Core" />
-        <TrimmerRootAssembly Include="AWSSDK.DynamoDBv2" />
-    </ItemGroup>
-
+  <ItemGroup>
+    <TrimmerRootAssembly Include="AWSSDK.Core" />
+    <TrimmerRootAssembly Include="AWSSDK.DynamoDBv2" />
+  </ItemGroup>
 </Project>
