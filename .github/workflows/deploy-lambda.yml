@@ -89,8 +89,8 @@ jobs:
           aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           aws-region: '${{ secrets.AWS_REGION }}'
-      - run: sam build --template ${SAM_TEMPLATE} --use-container
+      - run: sam build --template ${SAM_TEMPLATE} --use-container --mount-with WRITE
       - run: >-
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-          --stack-name ashulearn-aws-lambda-annotation-native-aot-with-dynamodb --s3-bucket vstiara-hosted-content
+          --stack-name ashulearn-aws-lambda-annotation-native-aot-with-dynamodb --s3-bucket vstiara-deployment-content
           --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }}
