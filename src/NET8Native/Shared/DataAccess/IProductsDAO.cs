@@ -18,9 +18,10 @@ public partial interface IProductsDAO
     /// <summary>
     /// Get product
     /// </summary>
-    /// <param name="id">Product identitifer</param>
+    /// <param name="id">Product identitifer (partition key)</param>
+    /// <param name="barcode">Barcode identitifer (sort key)</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    Task<Product> GetProduct(string id);
+    Task<Product> GetProduct(string id, string barcode);
 
     /// <summary>
     /// Create product
@@ -39,9 +40,10 @@ public partial interface IProductsDAO
     /// <summary>
     /// Delete product
     /// </summary>
-    /// <param name="id">Product identifier</param>
+    /// <param name="id">Product identitifer (partition key)</param>
+    /// <param name="barcode">Barcode identitifer (sort key)</param>
     /// <returns>A task that represents the asynchronous operation</returns>
-    Task DeleteProduct(string id);
+    Task DeleteProduct(string id, string barcode);
 
     /// <summary>
     /// List of products

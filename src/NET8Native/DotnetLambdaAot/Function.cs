@@ -20,8 +20,13 @@ using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
 using Shared.DataAccess;
 using Shared.Models;
+
+//Assembly attributes to enable the lambda function's JSON input to be converted into a .NET class
+//[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+//[assembly: LambdaSerializer(typeof(SourceGeneratorLambdaJsonSerializer<LambdaFunctionJsonSerializerContext>))]
 
 namespace DotNetLambdaAot;
 
@@ -56,17 +61,17 @@ public partial class Function
     }
     
     [LambdaFunction()]
-    [HttpApi(LambdaHttpMethod.Get, template:"/{id}")]
-    public virtual async Task<Product> GetProductAsync(string id)
+    [HttpApi(LambdaHttpMethod.Get, template:"/{id}/{barcode}")]
+    public virtual async Task<Product> GetProductAsync(string id, string barcode)
     {
-        return await _dataAccess.GetProduct(id);
+        return await _dataAccess.GetProduct(id, barcode);
     }
 
     [LambdaFunction()]
-    [HttpApi(LambdaHttpMethod.Delete, template: "/{id}")]
-    public virtual async Task<string> DeleteProductAsync(string id)
+    [HttpApi(LambdaHttpMethod.Delete, template: "/{id}/{barcode}")]
+    public virtual async Task<string> DeleteProductAsync(string id, string barcode)
     {
-        await _dataAccess.DeleteProduct(id);
+        await _dataAccess.DeleteProduct(id, barcode);
 
         return "Deleted";
     }

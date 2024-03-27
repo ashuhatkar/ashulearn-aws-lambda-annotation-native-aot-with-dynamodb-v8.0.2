@@ -1,0 +1,153 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Example template for an HTTP API that creates, updates, and deletes items in DynamoDB
+
+Globals:
+  Function:
+    MemorySize: 1024
+    Runtime: dotnet8
+    Timeout: 100
+    Tracing: Active
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME: !Ref Table
+
+Resources:
+  # The following section creates a Lambda function with an IAM execution role. It also specifies that the code for this Lambda function is
+  # located under a folder specified in the CodeUri Key. The Handler key defines the file and function name of the entrypoint
+  # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  GetProductsAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT GetProducts example
+      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      Handler: bootstrap::DotNetLambdaAot.Function_GetProductsAsync_Generated::GetProductsAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: "GetProductsAsync"
+      # The Events section is part of the function definition. This section specifies the different events that will trigger the Lambda function.
+      # In this case, we are specifying an HTTP GET request to an API Gateway with an endpoint of / (root)
+      Policies:
+      # Give read permissions to table
+      - DynamoDBReadPolicy:
+          TableName: !Ref Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /
+            Method: GET
+
+  GetProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT GetProduct example
+      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      Handler: bootstrap::DotNetLambdaAot.Function_GetProductAsync_Generated::GetProductAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: "GetProductAsync"
+      Policies:
+      # Give read permissions to table
+      - DynamoDBReadPolicy:
+          TableName: !Ref Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /{id}
+            Method: GET
+
+  DeleteProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT DeleteProduct example
+      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      Handler: bootstrap::DotNetLambdaAot.Function_DeleteProductAsync_Generated::DeleteProductAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: "DeleteProductAsync"
+      Policies:
+      # Give read, write, update permissions to table
+      - DynamoDBCrudPolicy:
+          TableName: !Ref Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /{id}
+            Method: DELETE
+
+  CreateProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT CreateProduct example
+      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      Handler: bootstrap::DotNetLambdaAot.Function_CreateProductAsync_Generated::CreateProductAsync
+      MemorySize: 3000
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: "CreateProductAsync"
+      Policies:
+      # Give read, write, update permissions to table
+      - DynamoDBCrudPolicy:
+          TableName: !Ref Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /create
+            Method: POST
+
+  UpdateProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT UpdateProduct example
+      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      Handler: bootstrap::DotNetLambdaAot.Function_UpdateProductAsync_Generated::UpdateProductAsync
+      MemorySize: 3000
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: "UpdateProductAsync"
+      Policies:
+      # Give read, write, update permissions to table
+      - DynamoDBCrudPolicy:
+          TableName: !Ref Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /update
+            Method: PUT
+
+  # DynamoDB table to store item: {id:, barcode:}
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Products
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+        - AttributeName: Barcode
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+        - AttributeName: Barcode
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
+# The Outputs section is optional an it declares output values that you import into other CloudFormation stacks (to create cross stack ref).
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"

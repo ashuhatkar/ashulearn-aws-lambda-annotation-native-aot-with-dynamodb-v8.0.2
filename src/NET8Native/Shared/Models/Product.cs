@@ -24,9 +24,10 @@ public partial class Product
         Name = string.Empty;
     }
 
-    public Product(string id, string name, decimal price)
+    public Product(string id, string barcode, string name, decimal price)
     {
         Id = id;
+        Barcode = barcode;
         Name = name;
         Price = price;
     }
@@ -34,6 +35,7 @@ public partial class Product
     #endregion
 
     public string Id { get; set; }
+    public string Barcode { get; set; }
     public string Name { get; set; }
     public decimal Price { get; set; }
 
@@ -46,6 +48,7 @@ public partial class Product
     {
         return "Product{" +
                 "id='" + Id + '\'' +
+                ", barcode='" + Barcode + '\'' +
                 ", name='" + Name + '\'' +
                 ", price='" + Price +
                 '}';

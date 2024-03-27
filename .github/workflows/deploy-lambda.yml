@@ -92,5 +92,5 @@ jobs:
       - run: sam build --template ${SAM_TEMPLATE} --use-container
       - run: >-
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-          --stack-name sam-ashulearn-lambda --s3-bucket vstiara-hosted-content
+          --stack-name ashulearn-aws-lambda-annotation-native-aot-with-dynamodb --s3-bucket vstiara-hosted-content
           --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }}

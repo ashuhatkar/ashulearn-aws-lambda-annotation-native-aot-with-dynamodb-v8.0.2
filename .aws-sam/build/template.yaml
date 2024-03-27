@@ -1,0 +1,152 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Example template for an HTTP API that creates, updates, and deletes
+  items in DynamoDB
+
+  '
+Globals:
+  Function:
+    MemorySize: 1024
+    Runtime: dotnet8
+    Timeout: 100
+    Tracing: Active
+    Environment:
+      Variables:
+        PRODUCT_TABLE_NAME:
+          Ref: Table
+Resources:
+  GetProductsAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT GetProducts example
+      CodeUri: GetProductsAsyncFunction
+      Handler: bootstrap::DotNetLambdaAot.Function_GetProductsAsync_Generated::GetProductsAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: GetProductsAsync
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /
+            Method: GET
+    Metadata:
+      SamResourceId: GetProductsAsyncFunction
+  GetProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT GetProduct example
+      CodeUri: GetProductAsyncFunction
+      Handler: bootstrap::DotNetLambdaAot.Function_GetProductAsync_Generated::GetProductAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: GetProductAsync
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /{id}
+            Method: GET
+    Metadata:
+      SamResourceId: GetProductAsyncFunction
+  DeleteProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT DeleteProduct example
+      CodeUri: DeleteProductAsyncFunction
+      Handler: bootstrap::DotNetLambdaAot.Function_DeleteProductAsync_Generated::DeleteProductAsync
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: DeleteProductAsync
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /{id}
+            Method: DELETE
+    Metadata:
+      SamResourceId: DeleteProductAsyncFunction
+  CreateProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT CreateProduct example
+      CodeUri: CreateProductAsyncFunction
+      Handler: bootstrap::DotNetLambdaAot.Function_CreateProductAsync_Generated::CreateProductAsync
+      MemorySize: 3000
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: CreateProductAsync
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /create
+            Method: POST
+    Metadata:
+      SamResourceId: CreateProductAsyncFunction
+  UpdateProductAsyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Native AOT UpdateProduct example
+      CodeUri: UpdateProductAsyncFunction
+      Handler: bootstrap::DotNetLambdaAot.Function_UpdateProductAsync_Generated::UpdateProductAsync
+      MemorySize: 3000
+      Environment:
+        Variables:
+          ANNOTATIONS_HANDLER: UpdateProductAsync
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            PayloadFormatVersion: '2.0'
+            Path: /update
+            Method: PUT
+    Metadata:
+      SamResourceId: UpdateProductAsyncFunction
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Products
+      AttributeDefinitions:
+      - AttributeName: Id
+        AttributeType: S
+      - AttributeName: Barcode
+        AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+      - AttributeName: Id
+        KeyType: HASH
+      - AttributeName: Barcode
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/

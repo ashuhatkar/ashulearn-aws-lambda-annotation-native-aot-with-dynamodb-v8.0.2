@@ -16,21 +16,23 @@ namespace Shared.DataAccess;
 
 public partial class ProductMapper
 {
-    public static string PK = "id";
-    public static string NAME = "name";
-    public static string PRICE = "price";
+    public static string PK = "Id";
+    public static string BARCODE = "Barcode";
+    public static string NAME = "Name";
+    public static string PRICE = "Price";
 
-    public static Product ProductFromDynamoDB(Dictionary<String, AttributeValue> items)
+    public static Product ProductFromDynamoDB(Dictionary<string, AttributeValue> items)
     {
-        var product = new Product(items[PK].S, items[NAME].S, decimal.Parse(items[PRICE].N));
+        var product = new Product(items[PK].S, items[BARCODE].S, items[NAME].S, decimal.Parse(items[PRICE].N));
 
         return product;
     }
 
     public static Dictionary<string, AttributeValue> ProductToDynamoDb(Product product)
     {
-        Dictionary<string, AttributeValue> item = new Dictionary<string, AttributeValue>(3);
+        Dictionary<string, AttributeValue> item = new Dictionary<string, AttributeValue>(4);
         item.Add(PK, new AttributeValue(product.Id));
+        item.Add(BARCODE, new AttributeValue(product.Barcode));
         item.Add(NAME, new AttributeValue(product.Name));
         item.Add(PRICE, new AttributeValue()
         {

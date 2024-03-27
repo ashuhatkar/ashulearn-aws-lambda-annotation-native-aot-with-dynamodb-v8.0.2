@@ -26,9 +26,9 @@ public partial class DynamoDBProducts : IProductsDAO
 {
     #region Fields
 
-    private static readonly string PRODUCT_TABLE_NAME = Environment.GetEnvironmentVariable("PRODUCT_TABLE_NAME") ?? string.Empty;
+    private static readonly string PRODUCT_TABLE_NAME = Environment.GetEnvironmentVariable("PRODUCT_TABLE_NAME") ?? "Products";
     private readonly AmazonDynamoDBClient _dynamoDbClient;
-    private readonly IDynamoDBContext _dynamoDbContext;
+    //private readonly IDynamoDBContext _dynamoDbContext;
 
     #endregion
 
@@ -39,7 +39,7 @@ public partial class DynamoDBProducts : IProductsDAO
     {
         _dynamoDbClient = new AmazonDynamoDBClient();
         _dynamoDbClient.DescribeTableAsync(PRODUCT_TABLE_NAME).GetAwaiter().GetResult();
-        _dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
+        //_dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
     }
 
     #endregion
@@ -71,14 +71,16 @@ public partial class DynamoDBProducts : IProductsDAO
     /// <summary>
     /// Get product
     /// </summary>
-    /// <param name="id">Product identitifer</param>
+    /// <param name="id">Product identitifer (partition key)</param>
+    /// <param name="barcode">Barcode identitifer (sort key)</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    public virtual async Task<Product> GetProduct(string id)
+    public virtual async Task<Product> GetProduct(string id, string barcode)
     {
         var getItemResponse = await _dynamoDbClient.GetItemAsync(new GetItemRequest(PRODUCT_TABLE_NAME,
             new Dictionary<string, AttributeValue>(1)
             {
-                {ProductMapper.PK, new AttributeValue(id)}
+                {ProductMapper.PK, new AttributeValue(id)},
+                {ProductMapper.BARCODE, new AttributeValue(barcode)}
             }));
 
         return getItemResponse.IsItemSet ? ProductMapper.ProductFromDynamoDB(getItemResponse.Item) : null;
@@ -91,7 +93,8 @@ public partial class DynamoDBProducts : IProductsDAO
     /// <returns>A task that represents an asynchronous operation</returns>
     public virtual async Task CreateProduct([FromBody] Product product)
     {
-        await _dynamoDbContext.SaveAsync(product);
+        //await _dynamoDbContext.SaveAsync(product);
+        await Task.FromResult(product);
     }
 
     /// <summary>
@@ -107,13 +110,15 @@ public partial class DynamoDBProducts : IProductsDAO
     /// <summary>
     /// Delete product
     /// </summary>
-    /// <param name="id">Product identifier</param>
+    /// <param name="id">Product identifier (partition key)</param>
+    /// <param name="barcode">Barcode identifier (sort key)</param>
     /// <returns>A task that represents the asynchronous operation</returns>
-    public virtual async Task DeleteProduct(string id)
+    public virtual async Task DeleteProduct(string id, string barcode)
     {
         await _dynamoDbClient.DeleteItemAsync(PRODUCT_TABLE_NAME, new Dictionary<string, AttributeValue>(1)
         {
-            {ProductMapper.PK, new AttributeValue(id)}
+            {ProductMapper.PK, new AttributeValue(id)},
+            {ProductMapper.BARCODE, new AttributeValue(barcode)}
         });
     }
 

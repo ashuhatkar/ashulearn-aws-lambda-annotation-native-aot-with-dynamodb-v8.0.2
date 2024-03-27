@@ -8,9 +8,7 @@
   "profile": "default",
   "region": "ap-southeast-2",
   "configuration": "Release",
-  "function-runtime": "provided.al2",
-  "function-memory-size": 256,
-  "function-timeout": 30,
-  "function-handler": "bootstrap",
-  "msbuild-parameters": "--self-contained true"
+  "s3-prefix": "DotnetLambdaAot/",
+  "template": "serverless.template",
+  "template-parameters": ""
 }
