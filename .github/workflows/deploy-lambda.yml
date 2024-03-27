@@ -62,7 +62,7 @@ name: Deploy main branch to Amazon Lambda
       - main
 env:
   AWS_REGION: ap-southeast-2
-  SAM_TEMPLATE: ./src/NET8Native/template.yaml
+  SAM_TEMPLATE: ./template.yaml
 jobs:
   build-deploy-serverless:
     name: Deploy
