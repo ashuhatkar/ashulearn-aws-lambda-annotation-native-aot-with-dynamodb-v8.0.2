@@ -20,7 +20,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "DotnetLambdaAot",
+        "Handler": "bootstrap",
         "Environment": {
           "Variables": {
             "ANNOTATIONS_HANDLER": "GetProductsAsync"
@@ -54,7 +54,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "DotnetLambdaAot",
+        "Handler": "bootstrap",
         "Environment": {
           "Variables": {
             "ANNOTATIONS_HANDLER": "GetProductAsync"
@@ -88,7 +88,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "DotnetLambdaAot",
+        "Handler": "bootstrap",
         "Environment": {
           "Variables": {
             "ANNOTATIONS_HANDLER": "DeleteProductAsync"
@@ -122,7 +122,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "DotnetLambdaAot",
+        "Handler": "bootstrap",
         "Environment": {
           "Variables": {
             "ANNOTATIONS_HANDLER": "CreateProductAsync"
@@ -156,7 +156,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "DotnetLambdaAot",
+        "Handler": "bootstrap",
         "Environment": {
           "Variables": {
             "ANNOTATIONS_HANDLER": "UpdateProductAsync"
