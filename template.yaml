@@ -22,7 +22,7 @@ Resources:
     Properties:
       Description: Native AOT GetProducts example
       CodeUri: ./src/NET8Native/DotnetLambdaAot/
-      Handler: bootstrap::DotNetLambdaAot.Function_GetProductsAsync_Generated::GetProductsAsync
+      Handler: DotnetLambdaAot
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "GetProductsAsync"
@@ -45,7 +45,7 @@ Resources:
     Properties:
       Description: Native AOT GetProduct example
       CodeUri: ./src/NET8Native/DotnetLambdaAot/
-      Handler: bootstrap::DotNetLambdaAot.Function_GetProductAsync_Generated::GetProductAsync
+      Handler: DotnetLambdaAot
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "GetProductAsync"
@@ -66,7 +66,7 @@ Resources:
     Properties:
       Description: Native AOT DeleteProduct example
       CodeUri: ./src/NET8Native/DotnetLambdaAot/
-      Handler: bootstrap::DotNetLambdaAot.Function_DeleteProductAsync_Generated::DeleteProductAsync
+      Handler: DotnetLambdaAot
       Environment:
         Variables:
           ANNOTATIONS_HANDLER: "DeleteProductAsync"
@@ -87,7 +87,7 @@ Resources:
     Properties:
       Description: Native AOT CreateProduct example
       CodeUri: ./src/NET8Native/DotnetLambdaAot/
-      Handler: bootstrap::DotNetLambdaAot.Function_CreateProductAsync_Generated::CreateProductAsync
+      Handler: DotnetLambdaAot
       MemorySize: 3000
       Environment:
         Variables:
@@ -109,7 +109,7 @@ Resources:
     Properties:
       Description: Native AOT UpdateProduct example
       CodeUri: ./src/NET8Native/DotnetLambdaAot/
-      Handler: bootstrap::DotNetLambdaAot.Function_UpdateProductAsync_Generated::UpdateProductAsync
+      Handler: DotnetLambdaAot
       MemorySize: 3000
       Environment:
         Variables:
