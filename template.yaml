@@ -21,7 +21,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Native AOT GetProducts example
-      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      CodeUri: .
       Handler: DotnetLambdaAot::DotNetLambdaAot.Function_GetProductsAsync_Generated::GetProductsAsync
       # The Events section is part of the function definition. This section specifies the different events that will trigger the Lambda function.
       # In this case, we are specifying an HTTP GET request to an API Gateway with an endpoint of / (root)
@@ -41,7 +41,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Native AOT GetProduct example
-      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      CodeUri: .
       Handler: DotnetLambdaAot::DotNetLambdaAot.Function_GetProductAsync_Generated::GetProductAsync
       Policies:
       # Give read, write, update permissions to table
@@ -59,7 +59,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Native AOT DeleteProduct example
-      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      CodeUri: .
       Handler: DotnetLambdaAot::DotNetLambdaAot.Function_DeleteProductAsync_Generated::DeleteProductAsync
       Policies:
       # Give read, write, update permissions to table
@@ -77,11 +77,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Native AOT CreateProduct example
-      CodeUri: ./src/NET8Native/DotnetLambdaAot/
+      CodeUri: .
       Handler: DotnetLambdaAot::DotNetLambdaAot.Function_CreateProductAsync_Generated::CreateProductAsync
-      Environment:
-        Variables:
-          ANNOTATIONS_HANDLER: "CreateProductAsync"
       Policies:
       # Give read, write, update permissions to table
       - DynamoDBCrudPolicy:
