@@ -14,7 +14,9 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using Amazon.DynamoDBv2.Model.Internal.MarshallTransformations;
 using Amazon.Lambda.Annotations.APIGateway;
+using Microsoft.VisualBasic;
 using Shared.Models;
 
 namespace Shared.DataAccess;
@@ -28,7 +30,7 @@ public partial class DynamoDBProducts : IProductsDAO
 
     private static readonly string PRODUCT_TABLE_NAME = Environment.GetEnvironmentVariable("PRODUCT_TABLE_NAME") ?? "Products";
     private readonly AmazonDynamoDBClient _dynamoDbClient;
-    //private readonly IDynamoDBContext _dynamoDbContext;
+    private readonly IDynamoDBContext _dynamoDbContext;
 
     #endregion
 
@@ -39,7 +41,7 @@ public partial class DynamoDBProducts : IProductsDAO
     {
         _dynamoDbClient = new AmazonDynamoDBClient();
         _dynamoDbClient.DescribeTableAsync(PRODUCT_TABLE_NAME).GetAwaiter().GetResult();
-        //_dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
+        _dynamoDbContext = new DynamoDBContext(new AmazonDynamoDBClient());
     }
 
     #endregion
@@ -91,10 +93,10 @@ public partial class DynamoDBProducts : IProductsDAO
     /// </summary>
     /// <param name="product">Product</param>
     /// <returns>A task that represents an asynchronous operation</returns>
-    public virtual async Task CreateProduct([FromBody] Product product)
+    public virtual async Task CreateProduct(Product product)
     {
         //await _dynamoDbContext.SaveAsync(product);
-        await Task.FromResult(product);
+        await _dynamoDbClient.PutItemAsync(PRODUCT_TABLE_NAME, ProductMapper.ProductToDynamoDb(product));
     }
 
     /// <summary>

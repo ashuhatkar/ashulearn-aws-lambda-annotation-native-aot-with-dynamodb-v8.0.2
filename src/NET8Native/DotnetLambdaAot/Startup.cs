@@ -9,7 +9,6 @@
   --* Review            Ver  Author           Date      Cr       Comments
   --* 001               001  A HATKAR         09/11/24  CR-XXXXX Original
   --****************************************************************************/
-using System;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,14 +22,6 @@ namespace DotNetLambdaAot;
 [Amazon.Lambda.Annotations.LambdaStartup]
 public class Startup
 {
-    #region Ctor
-
-    public Startup()
-    {
-    }
-
-    #endregion
-
     /// <summary>
     /// Add services to the application and configure service provider
     /// </summary>
